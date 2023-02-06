@@ -36,7 +36,7 @@ export default function JSONDisplay ({label, value, keyPath=[], pad=0}) {
         if(Array.isArray(value)){ //If value is an array create list of values
             return(
             <div>
-                <ListItemButton onClick={(e)=>{setOpen(!open)}}><DeleteForever onClick={(e) => deleteItem(e, keyPath)}/><ListItemText primary={`${label}`}/>{open ? <KeyboardArrowDown /> : <KeyboardArrowRight />}</ListItemButton>
+                <ListItemButton onClick={(e)=>{setOpen(!open)}}><Button sx={{pl: 0, justifyContent: 'flex-start'}}><DeleteForever onClick={(e) => deleteItem(e, keyPath)}/></Button><ListItemText primary={`${label}`}/>{open ? <KeyboardArrowDown /> : <KeyboardArrowRight />}</ListItemButton>
                 <Collapse in={open}>
                     <List disablePadding sx={{pl: pad+padIncrement}}>
                         <ListItemButton ><TextField className='inputValue' sx={{pl: pad+padIncrement}}/> <Button onClick={(e) =>{addItem(e, keyPath)}}><Check/></Button>or <Button onClick={(e) =>{addItem(e, keyPath, false, true)}}><DataObject/></Button> or <Button onClick={(e) =>{addItem(e, keyPath, true, false)}}><DataArray/></Button></ListItemButton>
@@ -48,7 +48,7 @@ export default function JSONDisplay ({label, value, keyPath=[], pad=0}) {
         else{ //is a POJO, create a new category
             return(
             <div>
-                <ListItemButton onClick={(e)=>{setOpen(!open)}}><DeleteForever onClick={(e) => deleteItem(e, keyPath)}/><ListItemText primary={`${label}`}/>{open ? <KeyboardArrowDown /> : <KeyboardArrowRight />}</ListItemButton>
+                <ListItemButton onClick={(e)=>{setOpen(!open)}}><Button sx={{pl: 0, justifyContent: 'flex-start'}}><DeleteForever onClick={(e) => deleteItem(e, keyPath)}/></Button><ListItemText primary={`${label}`}/>{open ? <KeyboardArrowDown /> : <KeyboardArrowRight />}</ListItemButton>
                 <Collapse in={open}>
                     <List disablePadding sx={{pl: pad+padIncrement}}>
                         <ListItemButton ><TextField className='inputKey'sx={{pl: pad+padIncrement}}/>: <TextField className='inputValue' sx={{pl: pad+padIncrement}}/><Button onClick={(e) =>{addItem(e, keyPath)}}><Check/></Button>or <Button onClick={(e) =>{addItem(e, keyPath, false, true)}}><DataObject/></Button> or <Button onClick={(e) =>{addItem(e, keyPath, true, false)}}><DataArray/></Button></ListItemButton>
@@ -63,6 +63,6 @@ export default function JSONDisplay ({label, value, keyPath=[], pad=0}) {
         let changeFun = (e, keyPath) => {
             dispatch(update({"path": keyPath, value: e.target.value}));
         };
-        return(<ListItemButton >{text}<TextField onChange={(e) => changeFun(e, keyPath)} sx={{pl: 2}} value={_.get(state, keyPath)}/><DeleteForever onClick={(e) => deleteItem(e, keyPath)}/></ListItemButton>)
+        return(<ListItemButton >{text}<TextField onChange={(e) => changeFun(e, keyPath)} sx={{pl: 2}} value={_.get(state, keyPath)}/><Button><DeleteForever onClick={(e) => deleteItem(e, keyPath)}/></Button></ListItemButton>)
     }
 }
