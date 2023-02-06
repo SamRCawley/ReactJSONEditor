@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ListItemButton, ListItemText, List, Collapse, TextField, Button} from '@mui/material';
 import {KeyboardArrowDown, KeyboardArrowRight, DeleteForever, Check, DataArray, DataObject} from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
-import { update, remove, add } from '../../model';
+import { update, remove, add, changeKey } from '../../model';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 //import {DataArray, DataObject, Add} from '@mui/icons-material';
@@ -59,10 +59,13 @@ export default function JSONDisplay ({label, value, keyPath=[], pad=0}) {
         }
     }
     else{ //simple key value pair
-        let text = label ? `${label}: ` : ``;
+        //let text = label ? `${label}: ` : ``;
         let changeFun = (e, keyPath) => {
             dispatch(update({"path": keyPath, value: e.target.value}));
         };
-        return(<ListItemButton >{text}<TextField onChange={(e) => changeFun(e, keyPath)} sx={{pl: 2}} value={_.get(state, keyPath)}/><Button><DeleteForever onClick={(e) => deleteItem(e, keyPath)}/></Button></ListItemButton>)
+        let keyChanged = (e, keyPath) => {
+            dispatch(changeKey({"path": keyPath, key: e.target.value}));
+        }
+        return(<ListItemButton >{label? <TextField onBlur={(e) => {if(e.target.value !== label){keyChanged(e, keyPath)}}}  defaultValue={label}/> : ''}{label ? ':' : ''}<TextField onChange={(e) => changeFun(e, keyPath)} sx={{pl: 2}} value={_.get(state, keyPath)}/><Button><DeleteForever onClick={(e) => deleteItem(e, keyPath)}/></Button></ListItemButton>)
     }
 }
