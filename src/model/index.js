@@ -56,9 +56,21 @@ const reducer = createSlice({"name": "json", initialState, reducers: {
             parentObject[action.payload.key] = obj;
         }
         hash(state);
+    },
+    changeKey (state, action){
+        let parentPath = action.payload.path.slice(0, -1);
+        let parentObject = state;
+        if(parentPath.length !== 0){
+            parentObject = _.get(state, parentPath);
+        }
+        if(!(action.payload.key in parentObject)){
+            parentObject[action.payload.key] = parentObject[action.payload.path.slice(-1)[0]];
+        }
+        delete parentObject[action.payload.path.slice(-1)[0]];
+        hash(state);
     }
     }
 });
 
 export default reducer.reducer;
-export const { update, set, remove, add } = reducer.actions;
+export const { update, set, remove, add, changeKey } = reducer.actions;
